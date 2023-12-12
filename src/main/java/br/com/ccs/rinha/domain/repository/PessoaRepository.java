@@ -14,13 +14,17 @@ import java.util.UUID;
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, UUID> {
 
-    @Query("from Pessoa p join fetch p.stack where p.id= :id")
+    String FIND_BY_ID = "from Pessoa p join fetch p.stack where p.id= :id";
+    String FIND_BY_TERMO = """
+            from Pessoa p join fetch p.stack s
+             where p.nome ilike concat('%',:t,'%')
+              or p.apelido ilike concat('%', :t, '%')
+             """;
+
+    @Query(FIND_BY_ID)
     Optional<Pessoa> findByIdEager(UUID id);
 
-    @Query(value = "from Pessoa p join fetch p.stack s " +
-            "where p.nome ilike concat('%',:t,'%') " +
-            "or p.apelido ilike concat('%', :t, '%') " +
-            "or s ilike concat('%', :t, '%')")
+    @Query(value = FIND_BY_TERMO)
     @Transactional(readOnly = true)
     List<Pessoa> findByTermo(String t, PageRequest pageRequest);
 }

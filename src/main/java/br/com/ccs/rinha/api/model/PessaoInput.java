@@ -15,7 +15,6 @@ public record PessaoInput(@NotBlank @Size(max = 100) String nome,
                           @NotEmpty List<@NotBlank @Size(max = 32) String> stack) {
 
     public Pessoa toPessoa() {
-
         return new Pessoa(UUID.randomUUID(), nome, apelido, nascimento, stack);
     }
 }

@@ -20,20 +20,20 @@ services:
     networks:
       - default
 
-  api1: # API - Instância 01
-    image: rinha-java21-ccs1201:0.0.1
-    hostname: api1
-    depends_on:
-      - postgres
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: '1.5GB'
-    ports:
-      - '9999:8080'
-    networks:
-      - default
+#  api1: # API - Instância 01
+#    image: rinha-java21-ccs1201:0.0.1
+#    hostname: api1
+#    depends_on:
+#      - postgres
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.5'
+#          memory: '1.5GB'
+#    ports:
+#      - '9999:8080'
+#    networks:
+#      - default
 
 networks:
   default:

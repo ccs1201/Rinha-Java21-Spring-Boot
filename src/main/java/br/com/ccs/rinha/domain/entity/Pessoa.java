@@ -32,7 +32,7 @@ public class Pessoa {
     private LocalDate nascimento;
 
     @ElementCollection
-    @CollectionTable(name = "stack", indexes = @Index(name = "idx_stack", columnList = "stack"))
+    @CollectionTable(name = "stack") //, indexes = @Index(name = "idx_stack", columnList = "stack"))
     private List<String> stack;
 
     public UUID getId() {

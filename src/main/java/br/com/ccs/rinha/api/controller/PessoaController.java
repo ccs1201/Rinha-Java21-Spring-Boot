@@ -23,8 +23,9 @@ import static org.springframework.http.HttpStatus.*;
 public class PessoaController {
 
     private static final String PATH = "/pessoas";
+    private static final String URI_STR = "/pessoas/";
     private final PessoaRepository repository;
-    private final PageRequest pageRequest = PageRequest.of(1, 50);
+    private static final PageRequest pageRequest = PageRequest.of(0, 50);
 
     public PessoaController(PessoaRepository repository) {
         this.repository = repository;
@@ -33,11 +34,10 @@ public class PessoaController {
     @PostMapping(PATH)
     @ResponseStatus(CREATED)
     public ResponseEntity<Pessoa> create(@RequestBody @Valid PessaoInput input) {
-
         try {
-            var p = repository.saveAndFlush(input.toPessoa());
+            var p = repository.save(input.toPessoa());
             return ResponseEntity.created(URI.create(
-                    PATH.concat("/").concat(p.getId().toString()))).build();
+                    URI_STR.concat(p.getId().toString()))).build();
         } catch (Exception e) {
             throw new ResponseStatusException(UNPROCESSABLE_ENTITY);
         }
@@ -57,7 +57,6 @@ public class PessoaController {
         if (Objects.isNull(t)) {
             throw new ResponseStatusException(BAD_REQUEST);
         }
-
         return repository.findByTermo(t, pageRequest);
     }
 
