@@ -38,12 +38,11 @@ services:
       resources:
         limits:
           cpus: '1'
-          memory: '0.2GB'
+          memory: '200MB'
     ports:
       - '9999:9999'
 #    networks:
 #      - app_network
-
 
 #networks:
 #  app_network:
