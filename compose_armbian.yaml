@@ -1,30 +1,26 @@
 version: '3'
 services:
   api1: # API - Instância 01
-    image: rinha-java21-ccs1201:0.0.1
+    image: ccs1201/rinha_tvbox
     hostname: api1
     deploy:
       resources:
         limits:
           memory: '1GB'
-#    network_mode: host
-    ports:
-      - '8080:8080'
-  #    networks:
-  #      - app_network
+    #    network_mode: host
+    networks:
+      - app_network
 
   api2: # API - Instância 02
-    image: rinha-java21-ccs1201:0.0.1
+    image: ccs1201/rinha_tvbox
     hostname: api2
     deploy:
       resources:
         limits:
           memory: '1GB'
-#    network_mode: host
-    ports:
-      - '8080:8080'
-  #    networks:
-  #    - app_network
+    #    network_mode: host
+    networks:
+      - app_network
 
   nginx:
     image: nginx:alpine
@@ -41,9 +37,9 @@ services:
           memory: '200MB'
     ports:
       - '9999:9999'
-#    networks:
-#      - app_network
+    networks:
+      - app_network
 
-#networks:
-#  app_network:
+networks:
+  app_network:
 #    driver: bridge
