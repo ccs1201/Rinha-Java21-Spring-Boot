@@ -5,6 +5,7 @@ import br.com.ccs.rinha.domain.entity.Pessoa;
 import br.com.ccs.rinha.domain.repository.PessoaRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -15,6 +16,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -24,18 +27,19 @@ public class PessoaController {
 
     private static final String PATH = "/pessoas";
     private static final String URI_STR = "/pessoas/";
-    private final PessoaRepository repository;
+    @Autowired
+    private PessoaRepository repository;
+    //    private final InMemoryRespository repository;
     private static final PageRequest pageRequest = PageRequest.of(0, 50);
-
-    public PessoaController(PessoaRepository repository) {
-        this.repository = repository;
-    }
 
     @PostMapping(PATH)
     @ResponseStatus(CREATED)
     public ResponseEntity<Pessoa> create(@RequestBody @Valid PessaoInput input) {
+
+        var p = input.toPessoa();
+
         try {
-            var p = repository.save(input.toPessoa());
+            CompletableFuture.runAsync(() -> repository.save(p), Executors.newVirtualThreadPerTaskExecutor());
             return ResponseEntity.created(URI.create(
                     URI_STR.concat(p.getId().toString()))).build();
         } catch (Exception e) {

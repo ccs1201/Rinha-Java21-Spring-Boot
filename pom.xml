@@ -68,7 +68,7 @@
                 <configuration>
                     <image>
                         <builder>paketobuildpacks/builder-jammy-tiny</builder>
-                        <name>rinha-java21-ccs1201:0.0.1</name>
+                        <name>rinha-java21-springboot-ccs1201:0.0.1</name>
                         <env>
                             <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
                             <BP_JVM_TYPE>JRE</BP_JVM_TYPE>

@@ -1,41 +1,71 @@
+version: '3.9'
+name: 'rinha-csouza-java21'
+
 services:
+  #API1
+  api1:
+    image: rinha-java21-springboot-ccs1201:0.0.1
+    depends_on:
+      - postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '0.35'
+          memory: '896MB'
+    networks:
+      - app-network
+
+  #API2
+  api2:
+    image: rinha-java21-springboot-ccs1201:0.0.1
+    depends_on:
+      - postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '0.35'
+          memory: '896MB'
+    networks:
+      - app-network
+
+  #Data Base
   postgres:
-    image: 'postgres:latest'
-    shm_size: 1g
-    hostname: postgres
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=rinha
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - ./postgresql.conf:/docker-entrypoint-initdb.d/postgresql.conf
+    command: 'postgres -c config_file=/docker-entrypoint-initdb.d/postgresql.conf'
     deploy:
       resources:
         limits:
           cpus: '1'
           memory: '1.5GB'
-    environment:
-      - POSTGRES_DB=rinha
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    volumes:
-      - ./postgresql.conf:/docker-entrypoint-initdb.d/postgresql.conf
-    command: postgres -c config_file=/docker-entrypoint-initdb.d/postgresql.conf
-    ports:
-      - '5432:5432'
-    networks:
-      - default
 
-#  api1: # API - Instância 01
-#    image: rinha-java21-ccs1201:0.0.1
-#    hostname: api1
-#    depends_on:
-#      - postgres
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: '0.5'
-#          memory: '1.5GB'
-#    ports:
-#      - '9999:8080'
-#    networks:
-#      - default
+  #Nginx
+  nginx:
+    image: nginx:latest
+    ports:
+      - "9999:9999"
+    depends_on:
+      - api1
+      - api2
+      - postgres
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: '150MB'
 
 networks:
-  default:
-#    driver: virtual
-#    name: rinha-network
+  app-network:
