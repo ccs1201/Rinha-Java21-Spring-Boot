@@ -16,8 +16,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -39,7 +37,7 @@ public class PessoaController {
         var p = input.toPessoa();
 
         try {
-            CompletableFuture.runAsync(() -> repository.save(p), Executors.newVirtualThreadPerTaskExecutor());
+            repository.save(p);
             return ResponseEntity.created(URI.create(
                     URI_STR.concat(p.getId().toString()))).build();
         } catch (Exception e) {
