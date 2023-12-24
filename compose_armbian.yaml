@@ -6,7 +6,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: '1GB'
+          memory: '1.5GB'
     #    network_mode: host
     networks:
       - app_network
@@ -17,7 +17,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: '1GB'
+          memory: '1.5GB'
     #    network_mode: host
     networks:
       - app_network
@@ -34,7 +34,7 @@ services:
       resources:
         limits:
           cpus: '1'
-          memory: '200MB'
+          memory: '300MB'
     ports:
       - '9999:9999'
     networks:
@@ -42,4 +42,9 @@ services:
 
 networks:
   app_network:
-#    driver: bridge
+    driver: macvlan
+    driver_opts:
+    	parent: eth0
+    ipam:
+    	config:
+    		- subnet: 192.168.1.0/24

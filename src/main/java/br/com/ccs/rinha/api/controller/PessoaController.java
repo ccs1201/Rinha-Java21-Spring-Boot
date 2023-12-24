@@ -39,7 +39,7 @@ public class PessoaController {
         var p = input.toPessoa();
 
         try {
-            repository.save(p);
+            repository.saveAndFlush(p);
             return ResponseEntity.created(URI.create(
                     URI_STR.concat(p.getId().toString()))).build();
         } catch (Exception e) {
