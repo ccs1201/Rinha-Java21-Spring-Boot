@@ -39,7 +39,7 @@ public class PessoaController {
         var p = input.toPessoa();
 
         try {
-            CompletableFuture.runAsync(() -> repository.save(p), Executors.newVirtualThreadPerTaskExecutor());
+            repository.save(p);
             return ResponseEntity.created(URI.create(
                     URI_STR.concat(p.getId().toString()))).build();
         } catch (Exception e) {
