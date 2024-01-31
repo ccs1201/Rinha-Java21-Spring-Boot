@@ -3,7 +3,7 @@ name: 'rinha-csouza-java21'
 
 services:
   api1: # API - Instância 01
-    image: ccs1201/rinha_tvbox
+    image: ccs1201/rinha-spring
     hostname: api1
     depends_on:
       - postgres
@@ -17,7 +17,7 @@ services:
     network_mode: host
 
   api2: # API - Instância 02
-    image: ccs1201/rinha_tvbox
+    image: ccs1201/rinha-spring
     hostname: api2
     depends_on:
       - postgres
